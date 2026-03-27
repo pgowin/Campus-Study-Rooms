@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { RoomFilters } from "./RoomFilters";
 import type { ActiveFilters } from "./RoomFilters";
 import { STUDY_ROOMS, type StudyRoom } from "./rooms";
+import "./App.css";
 
 function toMinutes(time: string): number | null {
 	// Expects "HH:MM" (24h). Returns minutes since midnight.
@@ -150,28 +151,14 @@ function App() {
 	}, [activeFilters, selectedDate, startTime, endTime]);
 
 	return (
-		<div style={{ padding: 16, maxWidth: 1100, margin: "0 auto" }}>
-			<header style={{ padding: "8px 0 16px" }}>
+		<div className="appPage">
+			<header className="appHeader">
 				<h1 style={{ margin: 0 }}>Campus Study Room Finder</h1>
 			</header>
 
-			<main
-				style={{
-					display: "flex",
-					gap: 16,
-					alignItems: "flex-start",
-					flexWrap: "wrap",
-				}}
-			>
-				<aside
-					style={{
-						flex: "1 1 280px",
-						border: "1px solid rgba(0,0,0,0.1)",
-						borderRadius: 8,
-						padding: 12,
-					}}
-				>
-					<h2 style={{ marginTop: 0, fontSize: 18 }}>Filters</h2>
+			<main className="appMain">
+				<aside className="appPanel">
+					<h2 className="panelTitle">Filters</h2>
 					<RoomFilters
 						allRooms={STUDY_ROOMS}
 						onFilterChange={(_nextFilteredRooms, nextActiveFilters) => {
@@ -180,20 +167,11 @@ function App() {
 					/>
 				</aside>
 
-				<section
-					style={{
-						flex: "2 1 520px",
-						border: "1px solid rgba(0,0,0,0.1)",
-						borderRadius: 8,
-						padding: 12,
-					}}
-				>
-					<h2 style={{ marginTop: 0, fontSize: 18 }}>
-						Rooms ({filteredRooms.length})
-					</h2>
-					<div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 12 }}>
-						<div style={{ display: "grid", gap: 6 }}>
-							<label style={{ fontWeight: 600, fontSize: 14 }} htmlFor="date">
+				<section className="appPanel">
+					<h2 className="panelTitle">Rooms ({filteredRooms.length})</h2>
+					<div className="timeRow">
+						<div className="inputGroup">
+							<label className="label" htmlFor="date">
 								Date
 							</label>
 							<input
@@ -201,11 +179,11 @@ function App() {
 								type="date"
 								value={selectedDate}
 								onChange={(e) => setSelectedDate(e.target.value)}
-								style={{ padding: 8 }}
+								className="input"
 							/>
 						</div>
-						<div style={{ display: "grid", gap: 6 }}>
-							<label style={{ fontWeight: 600, fontSize: 14 }} htmlFor="startTime">
+						<div className="inputGroup">
+							<label className="label" htmlFor="startTime">
 								Start time
 							</label>
 							<input
@@ -213,11 +191,11 @@ function App() {
 								type="time"
 								value={startTime}
 								onChange={(e) => setStartTime(e.target.value)}
-								style={{ padding: 8 }}
+								className="input"
 							/>
 						</div>
-						<div style={{ display: "grid", gap: 6 }}>
-							<label style={{ fontWeight: 600, fontSize: 14 }} htmlFor="endTime">
+						<div className="inputGroup">
+							<label className="label" htmlFor="endTime">
 								End time
 							</label>
 							<input
@@ -225,7 +203,7 @@ function App() {
 								type="time"
 								value={endTime}
 								onChange={(e) => setEndTime(e.target.value)}
-								style={{ padding: 8 }}
+								className="input"
 							/>
 						</div>
 					</div>
