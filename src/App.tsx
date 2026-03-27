@@ -1,121 +1,117 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { useState } from "react";
+import { RoomFilters } from "./RoomFilters";
+import type { ActiveFilters } from "./RoomFilters";
+import { STUDY_ROOMS } from "./rooms";
 
-function App() {
-  const [count, setCount] = useState(0)
+type RoomListItemProps = {
+	id: string;
+	building: string;
+	roomNumber: string;
+	capacity: number;
+	features: string[];
+};
 
-  return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+function RoomListItem({ building, roomNumber, capacity, features }: RoomListItemProps) {
+	const displayedFeatures = features.slice(0, 4);
+	const hasMoreFeatures = features.length > displayedFeatures.length;
 
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+	return (
+		<li
+			style={{
+				padding: "12px 0",
+				borderBottom: "1px solid rgba(0,0,0,0.1)",
+			}}
+		>
+			<div style={{ display: "flex", gap: 12, justifyContent: "space-between" }}>
+				<div>
+					<div style={{ fontWeight: 600 }}>
+						{building} — Room {roomNumber}
+					</div>
+					<div style={{ fontSize: 14, opacity: 0.85 }}>
+						Capacity: {capacity}
+					</div>
+				</div>
+			</div>
+			<div style={{ marginTop: 6, fontSize: 14, opacity: 0.85 }}>
+				Features: {displayedFeatures.join(", ")}
+				{hasMoreFeatures ? " …" : ""}
+			</div>
+		</li>
+	);
 }
 
-export default App
+function App() {
+	const [filteredRooms, setFilteredRooms] = useState(STUDY_ROOMS);
+	const [activeFilters, setActiveFilters] = useState<ActiveFilters>({
+		building: null,
+		minCapacity: null,
+		features: [],
+	});
+
+	return (
+		<div style={{ padding: 16, maxWidth: 1100, margin: "0 auto" }}>
+			<header style={{ padding: "8px 0 16px" }}>
+				<h1 style={{ margin: 0 }}>Campus Study Room Finder</h1>
+			</header>
+
+			<main
+				style={{
+					display: "flex",
+					gap: 16,
+					alignItems: "flex-start",
+					flexWrap: "wrap",
+				}}
+			>
+				<aside
+					style={{
+						flex: "1 1 280px",
+						border: "1px solid rgba(0,0,0,0.1)",
+						borderRadius: 8,
+						padding: 12,
+					}}
+				>
+					<h2 style={{ marginTop: 0, fontSize: 18 }}>Filters</h2>
+					<RoomFilters
+						allRooms={STUDY_ROOMS}
+						onFilterChange={(nextFilteredRooms, nextActiveFilters) => {
+							setFilteredRooms(nextFilteredRooms);
+							setActiveFilters(nextActiveFilters);
+						}}
+					/>
+				</aside>
+
+				<section
+					style={{
+						flex: "2 1 520px",
+						border: "1px solid rgba(0,0,0,0.1)",
+						borderRadius: 8,
+						padding: 12,
+					}}
+				>
+					<h2 style={{ marginTop: 0, fontSize: 18 }}>
+						Rooms ({filteredRooms.length})
+					</h2>
+					<div style={{ fontSize: 14, opacity: 0.85, marginBottom: 8 }}>
+						Showing{activeFilters.building ? ` ${activeFilters.building}` : " all buildings"}
+						{activeFilters.minCapacity !== null ? `, capacity ≥ ${activeFilters.minCapacity}` : ""}
+						{activeFilters.features.length ? `, features: ${activeFilters.features.join(", ")}` : ""}
+					</div>
+					<ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+						{filteredRooms.map((room) => (
+							<RoomListItem
+								key={room.id}
+								id={room.id}
+								building={room.building}
+								roomNumber={room.roomNumber}
+								capacity={room.capacity}
+								features={room.features}
+							/>
+						))}
+					</ul>
+				</section>
+			</main>
+		</div>
+	);
+}
+
+export default App;
