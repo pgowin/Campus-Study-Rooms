@@ -3,6 +3,7 @@ import { RoomFilters } from "./RoomFilters";
 import type { ActiveFilters } from "./RoomFilters";
 import { STUDY_ROOMS, type StudyRoom } from "./rooms";
 import "./App.css";
+import { RoomDetails } from "./RoomDetails";
 
 function toMinutes(time: string): number | null {
 	// Expects "HH:MM" (24h). Returns minutes since midnight.
@@ -100,33 +101,43 @@ type RoomListItemProps = {
 	roomNumber: string;
 	capacity: number;
 	features: string[];
+	onSelect: () => void;
 };
 
-function RoomListItem({ building, roomNumber, capacity, features }: RoomListItemProps) {
+function RoomListItem({ building, roomNumber, capacity, features, onSelect }: RoomListItemProps) {
 	const displayedFeatures = features.slice(0, 4);
 	const hasMoreFeatures = features.length > displayedFeatures.length;
 
 	return (
-		<li
-			style={{
-				padding: "12px 0",
-				borderBottom: "1px solid rgba(0,0,0,0.1)",
-			}}
-		>
-			<div style={{ display: "flex", gap: 12, justifyContent: "space-between" }}>
-				<div>
-					<div style={{ fontWeight: 600 }}>
-						{building} — Room {roomNumber}
-					</div>
-					<div style={{ fontSize: 14, opacity: 0.85 }}>
-						Capacity: {capacity}
+		<li style={{ borderBottom: "1px solid rgba(0,0,0,0.1)" }}>
+			<button
+				type="button"
+				onClick={onSelect}
+				style={{
+					width: "100%",
+					textAlign: "left",
+					padding: "12px 0",
+					background: "transparent",
+					border: 0,
+					cursor: "pointer",
+					color: "inherit",
+				}}
+			>
+				<div style={{ display: "flex", gap: 12, justifyContent: "space-between" }}>
+					<div>
+						<div style={{ fontWeight: 600 }}>
+							{building} — Room {roomNumber}
+						</div>
+						<div style={{ fontSize: 14, opacity: 0.85 }}>
+							Capacity: {capacity}
+						</div>
 					</div>
 				</div>
-			</div>
-			<div style={{ marginTop: 6, fontSize: 14, opacity: 0.85 }}>
-				Features: {displayedFeatures.join(", ")}
-				{hasMoreFeatures ? " …" : ""}
-			</div>
+				<div style={{ marginTop: 6, fontSize: 14, opacity: 0.85 }}>
+					Features: {displayedFeatures.join(", ")}
+					{hasMoreFeatures ? " …" : ""}
+				</div>
+			</button>
 		</li>
 	);
 }
@@ -136,6 +147,7 @@ function App() {
 	const [selectedDate, setSelectedDate] = useState(defaultDate);
 	const [startTime, setStartTime] = useState("09:00");
 	const [endTime, setEndTime] = useState("10:00");
+	const [selectedRoom, setSelectedRoom] = useState<StudyRoom | null>(null);
 
 	const [activeFilters, setActiveFilters] = useState<ActiveFilters>({
 		building: null,
@@ -222,11 +234,23 @@ function App() {
 								roomNumber={room.roomNumber}
 								capacity={room.capacity}
 								features={room.features}
+								onSelect={() => setSelectedRoom(room)}
 							/>
 						))}
 					</ul>
 				</section>
 			</main>
+
+			<RoomDetails
+				room={selectedRoom}
+				onClose={() => setSelectedRoom(null)}
+				onRequestBooking={(room) => {
+					alert(
+						`Booking requested for ${room.building} Room ${room.roomNumber} on ${selectedDate} ${startTime}–${endTime}`,
+					);
+					setSelectedRoom(null);
+				}}
+			/>
 		</div>
 	);
 }
