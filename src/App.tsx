@@ -109,31 +109,23 @@ function RoomListItem({ building, roomNumber, capacity, features, onSelect }: Ro
 	const hasMoreFeatures = features.length > displayedFeatures.length;
 
 	return (
-		<li style={{ borderBottom: "1px solid rgba(0,0,0,0.1)" }}>
+		<li className="roomItem">
 			<button
 				type="button"
 				onClick={onSelect}
-				style={{
-					width: "100%",
-					textAlign: "left",
-					padding: "12px 0",
-					background: "transparent",
-					border: 0,
-					cursor: "pointer",
-					color: "inherit",
-				}}
+				className="roomButton"
 			>
-				<div style={{ display: "flex", gap: 12, justifyContent: "space-between" }}>
+				<div className="roomTopRow">
 					<div>
-						<div style={{ fontWeight: 600 }}>
+						<div className="roomTitle">
 							{building} — Room {roomNumber}
 						</div>
-						<div style={{ fontSize: 14, opacity: 0.85 }}>
+						<div className="roomMeta">
 							Capacity: {capacity}
 						</div>
 					</div>
 				</div>
-				<div style={{ marginTop: 6, fontSize: 14, opacity: 0.85 }}>
+				<div className="roomFeatures">
 					Features: {displayedFeatures.join(", ")}
 					{hasMoreFeatures ? " …" : ""}
 				</div>
@@ -165,11 +157,11 @@ function App() {
 	return (
 		<div className="appPage">
 			<header className="appHeader">
-				<h1 style={{ margin: 0 }}>Campus Study Room Finder</h1>
+				<h1 className="appTitle">Campus Study Room Finder</h1>
 			</header>
 
 			<main className="appMain">
-				<aside className="appPanel">
+				<aside className="appPanel filterPanel">
 					<h2 className="panelTitle">Filters</h2>
 					<RoomFilters
 						allRooms={STUDY_ROOMS}
@@ -179,7 +171,7 @@ function App() {
 					/>
 				</aside>
 
-				<section className="appPanel">
+				<section className="appPanel roomsPanel">
 					<h2 className="panelTitle">Rooms ({filteredRooms.length})</h2>
 					<div className="timeRow">
 						<div className="inputGroup">
@@ -219,13 +211,13 @@ function App() {
 							/>
 						</div>
 					</div>
-					<div style={{ fontSize: 14, opacity: 0.85, marginBottom: 8 }}>
+					<div className="roomSummary">
 						Showing{activeFilters.building ? ` ${activeFilters.building}` : " all buildings"}
 						{activeFilters.minCapacity !== null ? `, capacity ≥ ${activeFilters.minCapacity}` : ""}
 						{activeFilters.features.length ? `, features: ${activeFilters.features.join(", ")}` : ""}
 						{selectedDate ? `, ${selectedDate} ${startTime}–${endTime}` : ""}
 					</div>
-					<ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+					<ul className="roomList">
 						{filteredRooms.map((room) => (
 							<RoomListItem
 								key={room.id}

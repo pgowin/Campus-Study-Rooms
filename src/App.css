@@ -1,5 +1,5 @@
 .appPage {
-	padding: 16px;
+	padding: 20px;
 	max-width: 1100px;
 	margin: 0 auto;
 	text-align: left;
@@ -7,6 +7,20 @@
 
 .appHeader {
 	padding: 8px 0 16px;
+	border-bottom: 1px solid var(--border);
+	margin-bottom: 16px;
+}
+
+.appTitle {
+	margin: 0;
+	font-size: 32px;
+	letter-spacing: -0.4px;
+}
+
+@media (min-width: 900px) {
+	.appTitle {
+		font-size: 40px;
+	}
 }
 
 .appMain {
@@ -23,9 +37,19 @@
 }
 
 .appPanel {
-	border: 1px solid rgba(0, 0, 0, 0.1);
+	border: 1px solid var(--border);
 	border-radius: 8px;
-	padding: 12px;
+	padding: 14px;
+	background: var(--bg);
+	box-shadow: none;
+}
+
+.filterPanel {
+	background: var(--social-bg);
+}
+
+.roomsPanel {
+	background: var(--bg);
 }
 
 .panelTitle {
@@ -48,8 +72,89 @@
 .label {
 	font-weight: 600;
 	font-size: 14px;
+	color: var(--text-h);
 }
 
 .input {
-	padding: 8px;
+	padding: 10px 10px;
+	border-radius: 8px;
+	border: 1px solid var(--border);
+	background: var(--bg);
+	color: var(--text-h);
+	font: inherit;
+	line-height: 1.2;
+}
+
+.input:focus-visible {
+	outline: 2px solid var(--accent-border);
+	outline-offset: 2px;
+}
+
+.roomSummary {
+	font-size: 14px;
+	opacity: 0.9;
+	margin-bottom: 12px;
+}
+
+.roomList {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	display: grid;
+	gap: 10px;
+}
+
+.roomItem {
+	border: 1px solid var(--border);
+	border-radius: 10px;
+	background: var(--bg);
+	box-shadow: none;
+}
+
+.roomButton {
+	width: 100%;
+	text-align: left;
+	padding: 12px 12px;
+	background: transparent;
+	border: 0;
+	cursor: pointer;
+	color: inherit;
+	border-radius: 10px;
+}
+
+.roomButton:hover {
+	box-shadow: var(--shadow);
+}
+
+.roomButton:focus-visible {
+	outline: 2px solid var(--accent-border);
+	outline-offset: 2px;
+}
+
+.roomTopRow {
+	display: flex;
+	gap: 12px;
+	justify-content: space-between;
+}
+
+.roomTitle {
+	font-weight: 650;
+	color: var(--text-h);
+}
+
+.roomMeta {
+	font-size: 14px;
+	opacity: 0.9;
+}
+
+.roomFeatures {
+	margin-top: 8px;
+	font-size: 14px;
+	opacity: 0.9;
+}
+
+@media (max-width: 480px) {
+	.appPage {
+		padding: 14px;
+	}
 }
