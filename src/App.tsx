@@ -65,7 +65,7 @@ export function isRoomAvailable(room: StudyRoom, date: string, startTime: string
 	return !(overlapsRoomBusy || overlapsBuildingBusy);
 }
 
-function applyActiveFilters(rooms: StudyRoom[], filters: ActiveFilters): StudyRoom[] {
+export function applyActiveFilters(rooms: StudyRoom[], filters: ActiveFilters): StudyRoom[] {
 	return rooms.filter((room) => {
 		if (filters.building && room.building !== filters.building) return false;
 		if (filters.minCapacity !== null && room.capacity < filters.minCapacity) return false;
